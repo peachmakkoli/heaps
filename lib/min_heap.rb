@@ -14,10 +14,11 @@ class MinHeap
   end
 
   # This method adds a HeapNode instance to the heap
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(log n), where n is the number of nodes in the complete binary tree
+  # Space Complexity: O(log n), due to recursive calls of the heap_up method
   def add(key, value = key)
-    raise NotImplementedError, "Method not implemented yet..."
+    @store << HeapNode.new(key, value)
+    heap_up(@store.length - 1)
   end
 
   # This method removes and returns an element from the heap
@@ -58,7 +59,15 @@ class MinHeap
   # Time complexity: ?
   # Space complexity: ?
   def heap_up(index)
-    
+    return if !index || !@store[index]
+
+    parent = (index - 1) / 2
+
+    if @store[index].key < @store[parent].key
+      swap(index, parent)
+      return if parent == 0
+      heap_up(parent)
+    end
   end
 
   # This helper method takes an index and 
