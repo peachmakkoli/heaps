@@ -14,7 +14,7 @@ class MinHeap
   end
 
   # This method adds a HeapNode instance to the heap
-  # Time Complexity: O(log n), where n is the number of nodes in the complete binary tree
+  # Time Complexity: O(log n), where n is the number of nodes in a heap (a complete binary tree has log n levels)
   # Space Complexity: O(log n), due to recursive calls of the heap_up method
   def add(key, value = key)
     @store << HeapNode.new(key, value)
@@ -23,10 +23,16 @@ class MinHeap
 
   # This method removes and returns an element from the heap
   #   maintaining the heap structure
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(log n), where n is the number of nodes in a heap (a complete binary tree has log n levels)
+  # Space Complexity: O(log n), due to recursive calls of the heap_down method
   def remove()
-    raise NotImplementedError, "Method not implemented yet..."
+    return if @store.empty? 
+
+    swap(0, @store.length - 1)
+    result = @store.pop
+    
+    heap_down(0) unless @store.empty?
+    return result.value
   end
 
 
@@ -45,10 +51,10 @@ class MinHeap
   end
 
   # This method returns true if the heap is empty
-  # Time complexity: ?
-  # Space complexity: ?
+  # Time complexity: O(n), where n is the number of nodes
+  # Space complexity: O(1)
   def empty?
-    raise NotImplementedError, "Method not implemented yet..."
+    return @store.empty?
   end
 
   private
@@ -74,7 +80,20 @@ class MinHeap
   #  moves it up the heap if it's smaller
   #  than it's parent node.
   def heap_down(index)
-    raise NotImplementedError, "Method not implemented yet..."
+    left_child = index * 2 + 1
+    right_child = index * 2 + 2
+    return if !@store[left_child] 
+
+    min_child = @store[right_child] ? find_min_child(left_child, right_child) : left_child 
+
+    if @store[index].key > @store[min_child].key
+      swap(index, min_child)
+      heap_down(min_child)
+    end
+  end
+
+  def find_min_child(left_child, right_child)
+    @store[left_child].key <= @store[right_child].key ? left_child : right_child
   end
 
   # If you want a swap method... you're welcome
